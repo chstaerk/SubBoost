@@ -13,7 +13,7 @@ AdaSubBoost(
   tau = 0.01,
   const = 0,
   savings = 1,
-  U_C = 20,
+  U_C = 25,
   family = "normal",
   conservative = TRUE,
   update = "S",
@@ -42,7 +42,7 @@ AdaSubBoost(
 
 \item{savings}{default is set to 1}
 
-\item{U_C}{parameter is set to 20}
+\item{U_C}{parameter is set to 25}
 
 \item{family}{default is set to "normal"}
 

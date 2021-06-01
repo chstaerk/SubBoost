@@ -11,7 +11,7 @@ EBIC_beta(data, beta, const)
 
 \item{beta}{given estimate for coefficients of length p + 1}
 
-\item{const}{parameter for the EBIC, for BIC specify const = 0.}
+\item{const}{parameter for the EBIC, for BIC specify const = 0, for AIC specify const = "AIC".}
 }
 \description{
 This function computes extended BIC for given estimate beta of length p+1

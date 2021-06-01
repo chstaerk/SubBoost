@@ -11,7 +11,7 @@ EBIC(data, indices, const)
 
 \item{indices}{indices of data$x dat are included in the model}
 
-\item{const}{parameter for the EBIC, for BIC specify const = 0.}
+\item{const}{parameter for the EBIC, for BIC specify const = 0, for AIC specify const = "AIC".}
 }
 \description{
 This function computes extended BIC (EBIC).
