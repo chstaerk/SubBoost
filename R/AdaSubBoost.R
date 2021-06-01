@@ -10,7 +10,7 @@
 #' @param const parameter const - default is set to 0
 #' @param savings  default is set to 1
 #' @param const parameter const - default is set to 0
-#' @param U_C parameter is set to 20
+#' @param U_C parameter is set to 25
 #' @param family default is set to "normal"
 #' @param conservative default is set to TRUE
 #' @param update default is set to "S"
@@ -25,9 +25,11 @@
 #' @export
 #' @examples
 #' AdaSubBoost()
-AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.01, const = 0, savings = 1, U_C = 20, family = "normal",
+AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.01, const = 0, savings = 1, U_C = 25, family = "normal",
                         conservative = TRUE, update = "S", adaptive = TRUE, s_max = 20, nstop = Iter, automatic.stopping = TRUE,
                         marginal.screening = FALSE, plotting = FALSE) {
+
+
 
   p=ncol(data$x)
   n=nrow(data$x)

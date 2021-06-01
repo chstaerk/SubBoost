@@ -4,20 +4,29 @@
 #' This function computes extended BIC (EBIC).
 #' @param data should be a list with data$x as design matrix and data$y as response
 #' @param indices indices of data$x dat are included in the model
-#' @param const parameter for the EBIC, for BIC specify const = 0.
+#' @param const parameter for the EBIC, for BIC specify const = 0, for AIC specify const = "AIC".
 #' @keywords EBIC
 #' @export
 #' @examples
 #' EBIC()
-EBIC <- function(data, indices, const) {
+EBIC <- function(data,indices,const) {
   n=nrow(data$x)
   p=ncol(data$x)
+
+  # ToDo: change the const parameter, currently its a mix between numeric value and character (AIC)
+
   x.cur=data$x[,indices]
   x.cur=cbind(c(rep(1,n)),x.cur)
   lm.out = .lm.fit(x.cur, data$y)
   deviance = n*(1+log(2*pi)+ log(sum(lm.out$residuals^2) /n))
-  EBIC = deviance + log(n)*(length(indices)+2) + 2*(length(indices)+2)*const*log(p)
-  return(EBIC)
+  if(const!="AIC") {
+    EBIC = deviance + log(n)*(length(indices)+2) + 2*(length(indices)+2)*const*log(p)
+    return(EBIC)
+  }
+  if(const=="AIC") {
+    AIC = deviance + 2*(length(indices)+2)
+    return(AIC)
+  }
 }
 
 #' Simulate toeplitz correlated data
@@ -53,21 +62,29 @@ simdata.toeplitz.corr <- function (n, p, beta, sigma.normal, corr = 0) {
 #' This function computes extended BIC for given estimate beta of length p+1
 #' @param data should be a list with data$x as design matrix and data$y as response
 #' @param beta given estimate for coefficients of length p + 1
-#' @param const parameter for the EBIC, for BIC specify const = 0.
+#' @param const parameter for the EBIC, for BIC specify const = 0, for AIC specify const = "AIC".
 #' @keywords EBIC
 #' @export
 #' @examples
 #' EBIC_beta()
 EBIC_beta <- function(data, beta,const) {
-  n = nrow(data$x)
-  p = ncol(data$x)
-  df = sum(beta!=0)
-  x.cur = data$x
-  x.cur = cbind(c(rep(1,n)),x.cur)
+  n=nrow(data$x)
+  p=ncol(data$x)
+  df=sum(beta!=0)
+  x.cur=data$x
+  x.cur=cbind(c(rep(1,n)),x.cur)
+  # ToDo: change the const argument, currently its a mixture between numeric and character (AIC)
+
   RSS = sum( (data$y - x.cur %*% beta)^2 )
-  BIC = n*(1+log(2*pi)+log(RSS/n))+log(n)*df #compute BIC, nb. of parameters=df+1 (+sigma^2)
-  EBIC = BIC + 2*df*const*log(p)
-  return(EBIC)
+  if (const!="AIC") {
+    BIC=n*(1+log(2*pi)+log(RSS/n))+log(n)*df #compute BIC, nb. of parameters=df+1 (+sigma^2)
+    EBIC=BIC+2*df*const*log(p)
+    return(EBIC)
+  }
+  if (const=="AIC") {
+    AIC = n*(1+log(2*pi)+log(RSS/n))+2*df
+    return(AIC)
+  }
 }
 
 #' Fit ordinary least squares

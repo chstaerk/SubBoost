@@ -20,6 +20,8 @@ SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
                       s_max = 20, automatic.stopping = TRUE,
                       plotting = FALSE) {
 
+
+
   p=ncol(data$x)
   n=nrow(data$x)
 
