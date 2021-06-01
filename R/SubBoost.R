@@ -9,7 +9,7 @@
 #' @param savings  default is set to 1
 #' @param family default is set to "normal"
 #' @param s_max default is set to 20
-#' @param automated.stopping default is set to TRUE
+#' @param automatic.stopping default is set to TRUE
 #' @param plotting default is set to FALSE
 #' @keywords SubBoost
 #' @export

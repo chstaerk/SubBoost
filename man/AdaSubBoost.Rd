@@ -56,11 +56,11 @@ AdaSubBoost(
 
 \item{nstop}{default is set to  Iter}
 
+\item{automatic.stopping}{default is set to TRUE}
+
 \item{marginal.screening}{default is set to FALSE}
 
 \item{plotting}{default is set to FALSE}
-
-\item{automated.stopping}{default is set to TRUE}
 }
 \description{
 This function implements the adaptive subspace boosting algorithm (AdaSubBoost) as well as random subspace boosting (RSubBoost).

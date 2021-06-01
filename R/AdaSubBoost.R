@@ -18,7 +18,7 @@
 #' @param s_max default is set to 20
 #' @param update default is set to "S"
 #' @param nstop default is set to  Iter
-#' @param automated.stopping default is set to TRUE
+#' @param automatic.stopping default is set to TRUE
 #' @param marginal.screening default is set to FALSE
 #' @param plotting default is set to FALSE
 #' @keywords AdaSubBoost, RSubBoost

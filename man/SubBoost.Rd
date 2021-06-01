@@ -34,9 +34,9 @@ SubBoost(
 
 \item{s_max}{default is set to 20}
 
-\item{plotting}{default is set to FALSE}
+\item{automatic.stopping}{default is set to TRUE}
 
-\item{automated.stopping}{default is set to TRUE}
+\item{plotting}{default is set to FALSE}
 }
 \description{
 This function implements the subspace boosting algorithm (SubBoost).
