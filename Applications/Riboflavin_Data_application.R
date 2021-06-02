@@ -1,6 +1,5 @@
 
-
-source("AdaSubBoost_main_functions_current.R")
+library(SubBoost)
 
 
 

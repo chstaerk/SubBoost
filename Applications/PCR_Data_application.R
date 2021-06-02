@@ -3,9 +3,7 @@
 # JRSSB Datasets Vol. 77(5), Song and Liang (2015) 
 # Website: https://rss.onlinelibrary.wiley.com/hub/journal/14679868/series-b-datasets/pre_2016a
 
-
-source("AdaSubBoost_main_functions_current.R")
-
+library(SubBoost)
 
 
 External_LOOCV = function (i,data,...){
