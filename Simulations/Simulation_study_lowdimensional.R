@@ -1,4 +1,4 @@
-source("AdaSubBoost_main_functions_current.R")
+library(SubBoost)
 
 
 fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=20, savings=1, PFER, q_stabsel,

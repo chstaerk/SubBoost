@@ -1,4 +1,4 @@
-source("AdaSubBoost_main_functions_current.R")
+library(SubBoost)
 
 RNGkind("L'Ecuyer-CMRG")
 
