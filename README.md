@@ -1,4 +1,6 @@
-# SubBoost: Randomized boosting with multivariable base-learners
+# SubBoost 
+
+Randomized boosting with multivariable base-learners
 
 
 
