@@ -24,7 +24,35 @@ The function `SubBoost` can be used to run the Subspace Boosting algorithm.
 
 ## Examples
 ```r
-### high-dimensional examle (AdaSubBoost and RSubBoost)
+# load SubBoost library
+library("SubBoost")
+
+### low-dimensional example (SubBoost)
+# load "TH.data" package for bodyfat data
+library("TH.data")
+
+# input data format: 
+# list with design matrix in data$x and response vector in data$y
+data <- list()
+data$x <- as.matrix(bodyfat[,-2]) 
+data$y <- as.vector(bodyfat$DEXfat)
+
+# constant (gamma) in EBIC 
+const <- 0 # classical BIC 
+
+# learning rate 
+tau <- 0.01 
+
+# (maximum) number of iterations 
+Iter <- 1000 
+
+# SubBoost (only applicable for low-dimensional settings, e.g. p<=20)
+outputSub <- SubBoost(data = data, Iter = Iter, const = const, tau = tau)
+outputSub$selected # selected variables by SubBoost
+outputSub$coef # estimated coefficient vector by SubBoost
+
+
+### high-dimensional example (AdaSubBoost and RSubBoost)
 # load "hdi" package for riboflavin data 
 library("hdi")
 
