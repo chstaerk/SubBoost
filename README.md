@@ -22,7 +22,7 @@ To be able to use the `install_github()` command, one needs to install `devtools
 The function `SubBoost` can be used to run the Subspace Boosting algorithm.
 
 
-# Example
+## Example
 ```r
 # load SubBoost library
 library("SubBoost")
