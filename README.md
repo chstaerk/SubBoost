@@ -36,20 +36,23 @@ data <- list()
 data$x <- as.matrix(bodyfat[,-2]) 
 data$y <- as.vector(bodyfat$DEXfat)
 
+n <- dim(data$x)[1]
+p <- dim(data$x)[2]
+
 # constant (gamma) in EBIC 
 const <- 0 # classical BIC (default in AdaSubBoost)
 
 # expected search size 
-q <- 5 # should be chosen smaller than the number of covariates (p=9)
+q <- 5 
 
-# adaptation rate
-K <- 100 # default
+# adaptation parameter
+K <- p/q
 
 # maximum size for initial screening 
-s_max <- 9 # here the same as the number of covariates p=9
+s_max <- 4 
 
 # learning rate 
-tau <- 0.01 # default 
+tau <- 0.01 
 
 # (maximum) number of iterations 
 Iter <- 1000 
