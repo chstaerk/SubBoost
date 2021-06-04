@@ -22,11 +22,12 @@ To be able to use the `install_github()` command, one needs to install `devtools
 The function `SubBoost` can be used to run the Subspace Boosting algorithm.
 
 
-## Example
+## Examples
 ```r
 # load SubBoost library
 library("SubBoost")
 
+### low-dimensional example (SubBoost)
 # load "TH.data" package for bodyfat data
 library("TH.data")
 
@@ -40,16 +41,46 @@ n <- dim(data$x)[1]
 p <- dim(data$x)[2]
 
 # constant (gamma) in EBIC 
-const <- 0 # classical BIC (default in AdaSubBoost)
+const <- 0 # classical BIC 
+
+# learning rate 
+tau <- 0.01 
+
+# (maximum) number of iterations 
+Iter <- 1000 
+
+# SubBoost (only applicable for low-dimensional settings, e.g. p<=20)
+outputSub <- SubBoost(data = data, Iter = Iter, const = const, tau = tau)
+outputSub$selected # selected variables by SubBoost
+outputSub$coef # estimated coefficient vector by SubBoost
+
+
+### high-dimensional example (AdaSubBoost and RSubBoost)
+# load "hdi" package for riboflavin data 
+library("hdi")
+
+data(riboflavin)
+n = length(riboflavin$y)
+p = dim(riboflavin$x)[2]
+Xnames = colnames(riboflavin$x)
+
+# input data format: 
+# list with design matrix in data$x and response vector in data$y
+data = list()
+data$x = as.matrix(riboflavin$x) 
+data$y = as.vector(riboflavin$y)
+
+# constant (gamma) in EBIC 
+const <- 1 
 
 # expected search size 
-q <- 5 
+q <- 20 
 
 # adaptation parameter
 K <- p/q
 
 # maximum size for initial screening 
-s_max <- 4 
+s_max <- 15 
 
 # learning rate 
 tau <- 0.01 
@@ -61,8 +92,9 @@ Iter <- 1000
 set.seed(123)
 output <- AdaSubBoost(data = data, Iter = Iter, const = const, 
                       K = K, q = q, tau = tau, s_max = s_max)
-output$coef # estimated coefficient vector by AdaSubBoost
 output$selected # selected variables by AdaSubBoost
+length(output$selected)
+output$coef[names(output$selected)] # estimated non-zero coefficients by AdaSubBoost
 
 
 # RSubBoost (no adaptation of sampling probabilites for base-learners)
@@ -70,12 +102,7 @@ set.seed(123)
 outputRSub <- AdaSubBoost(data = data, Iter = Iter, const = const, 
                           K = K, q = q, tau = tau, s_max = s_max, 
                           adaptive = FALSE)
-outputRSub$coef # estimated coefficient vector by RSubBoost
 outputRSub$selected  # selected variables by RSubBoost
-
-
-# SubBoost (only applicable for low-dimensional settings, e.g. p<=20)
-outputSub <- SubBoost(data = data, Iter = Iter, const = const, tau = tau)
-outputSub$coef # estimated coefficient vector by SubBoost
-outputSub$selected # selected variables by SubBoost
+length(outputRSub$selected)
+output$coef[names(output$selected)] # estimated non-zero coefficients by RSubBoost
 ```
