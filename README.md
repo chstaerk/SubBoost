@@ -98,5 +98,5 @@ outputRSub <- AdaSubBoost(data = data, Iter = Iter, const = const,
                           K = K, q = q, tau = tau, s_max = s_max, 
                           adaptive = FALSE)
 outputRSub$selected  # selected variables by RSubBoost
-output$coef[names(output$selected)] # estimated non-zero coefficients by RSubBoost
+outputRSub$coef[names(outputRSub$selected)] # estimated non-zero coefficients by RSubBoost
 ```
