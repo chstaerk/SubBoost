@@ -65,8 +65,5 @@ AdaSubBoost(
 \description{
 This function implements the adaptive subspace boosting algorithm (AdaSubBoost) as well as random subspace boosting (RSubBoost).
 }
-\examples{
-AdaSubBoost()
-}
 \keyword{AdaSubBoost,}
 \keyword{RSubBoost}

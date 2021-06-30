@@ -35,7 +35,4 @@ method_results_scenario(
 \description{
 This helper function evaluates simulation results.
 }
-\examples{
-method_results_scenario()
-}
 \keyword{simulations}

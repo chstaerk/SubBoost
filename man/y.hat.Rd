@@ -14,7 +14,4 @@ y.hat(data, beta.hat)
 \description{
 This function estimates the y given x and coefficient vector beta.
 }
-\examples{
-y.hat()
-}
 \keyword{OLS}

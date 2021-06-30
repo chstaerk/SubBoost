@@ -14,7 +14,4 @@ beta.hat(data, indices)
 \description{
 This function estimates the coefficient vector beta.
 }
-\examples{
-beta.hat()
-}
 \keyword{OLS}

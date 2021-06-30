@@ -41,7 +41,4 @@ SubBoost(
 \description{
 This function implements the subspace boosting algorithm (SubBoost).
 }
-\examples{
-SubBoost()
-}
 \keyword{SubBoost}

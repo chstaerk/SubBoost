@@ -20,7 +20,4 @@ simdata.toeplitz.corr(n, p, beta, sigma.normal, corr = 0)
 \description{
 This function simulates toeplitz correlated data.
 }
-\examples{
-simdata.toeplitz.corr()
-}
 \keyword{toeplitz}

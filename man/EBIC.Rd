@@ -16,7 +16,4 @@ EBIC(data, indices, const)
 \description{
 This function computes extended BIC (EBIC).
 }
-\examples{
-EBIC()
-}
 \keyword{EBIC}

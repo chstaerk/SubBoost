@@ -24,7 +24,6 @@
 #' @keywords AdaSubBoost, RSubBoost
 #' @export
 #' @examples
-#' AdaSubBoost()
 AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.01, const = 0, savings = 1, U_C = 25, family = "normal",
                         conservative = TRUE, update = "S", adaptive = TRUE, s_max = 20, nstop = Iter, automatic.stopping = TRUE,
                         marginal.screening = FALSE, plotting = FALSE) {

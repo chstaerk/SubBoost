@@ -16,7 +16,4 @@ EBIC_beta(data, beta, const)
 \description{
 This function computes extended BIC for given estimate beta of length p+1
 }
-\examples{
-EBIC_beta()
-}
 \keyword{EBIC}

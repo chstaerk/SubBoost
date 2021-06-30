@@ -12,7 +12,4 @@ sqnorm2(x)
 \description{
 This function returns the sum of squares of x.
 }
-\examples{
-sqnorm2()
-}
 \keyword{ssq}

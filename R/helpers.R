@@ -8,7 +8,6 @@
 #' @keywords EBIC
 #' @export
 #' @examples
-#' EBIC()
 EBIC <- function(data,indices,const) {
   n=nrow(data$x)
   p=ncol(data$x)
@@ -41,7 +40,6 @@ EBIC <- function(data,indices,const) {
 #' @keywords toeplitz
 #' @export
 #' @examples
-#' simdata.toeplitz.corr()
 simdata.toeplitz.corr <- function (n, p, beta, sigma.normal, corr = 0) {
 
   mu=rep(0,p)
@@ -66,7 +64,6 @@ simdata.toeplitz.corr <- function (n, p, beta, sigma.normal, corr = 0) {
 #' @keywords EBIC
 #' @export
 #' @examples
-#' EBIC_beta()
 EBIC_beta <- function(data, beta,const) {
   n=nrow(data$x)
   p=ncol(data$x)
@@ -95,7 +92,6 @@ EBIC_beta <- function(data, beta,const) {
 #' @keywords OLS
 #' @export
 #' @examples
-#' beta.hat()
 beta.hat <- function(data, indices) {
   n=nrow(data$x)
   x.cur=data$x[,indices]
@@ -115,7 +111,6 @@ beta.hat <- function(data, indices) {
 #' @keywords OLS
 #' @export
 #' @examples
-#' y.hat()
 y.hat <- function(data, beta.hat) {
   n = nrow(data$x)
   x.matrix = cbind(c(rep(1,n)),data$x)
@@ -129,7 +124,6 @@ y.hat <- function(data, beta.hat) {
 #' @keywords ssq
 #' @export
 #' @examples
-#' sqnorm2()
 sqnorm2 <- function(x) return(sum(x^2))
 
 #' Evaluate simulation results (internal)
@@ -146,7 +140,6 @@ sqnorm2 <- function(x) return(sum(x^2))
 #' @keywords simulations
 #' @export
 #' @examples
-#' method_results_scenario()
 method_results_scenario <- function (model, beta1, s0, data.test,
                                      n_test, time, beta=NULL, data){
 

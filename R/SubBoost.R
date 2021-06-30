@@ -14,7 +14,6 @@
 #' @keywords SubBoost
 #' @export
 #' @examples
-#' SubBoost()
 SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
                       const = 0, savings = 1, family = "normal",
                       s_max = 20, automatic.stopping = TRUE,
