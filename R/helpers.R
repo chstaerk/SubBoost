@@ -140,25 +140,20 @@ sqnorm2 <- function(x) return(sum(x^2))
 #' @keywords simulations
 #' @export
 #' @examples
-method_results_scenario <- function (model, beta1, s0, data.test,
+method_res_scenario <- function (model, beta1, s0, data.test,
                                      n_test, time, beta=NULL, data){
-
   false_pos = sum(beta1[model]==0)
   false_neg = s0-sum(beta1[model]!=0)
-
   if (is.null(beta)){
     beta.hat =  beta.hat(data,model)
   } else {
     beta.hat =  beta
   }
   estimation_error = sqnorm2 ( c(0,beta1) - beta.hat)
-
   x.cur=cbind(c(rep(1,n_test)),data.test$x)
   linpred = x.cur %*% beta.hat
   test_y.hat = as.vector(linpred)
-
   prediction_error   = sqrt( 1/n_test * sqnorm2 ( data.test$y - test_y.hat)) # RMSE
-
   vect = c(false_pos,false_neg,estimation_error,prediction_error,time)
   names(vect) = c("False_positives", "False_negatives", "Estimation_error", "Prediction_error", "Comp_time")
   return(vect)
