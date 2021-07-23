@@ -20,6 +20,7 @@ SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
 
   data.cur = data
   beta.cur = numeric(p+1)
+  mstop <- 0
 
   # initialization of size (s) if not provided
   if (is.null(size.fixed)) {
