@@ -4,10 +4,9 @@ Version: 0.0.0.9000
 Author: Christian Staerk, Andreas Mayr
 Maintainer: Christian Staerk <christian.staerk@imbie.uni-bonn.de>
 Description: Implements different subspace boosting algorithms (SubBoost, RSubBoost, AddaSubBoost) with multivariable base-learners for high-dimensional variable selection and prediction.
-DEPENDS: R (>= 3.5.0), leaps, MASS, mvnfast
-IMPORTS: glmnet, mboost, stabs, bst, parallel
+DEPENDS: R (>= 3.5.0),  MASS, mvnfast, leaps
+IMPORTS: glmnet, mboost, stabs, bst, parallelSUGGESTS: TH.data
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+

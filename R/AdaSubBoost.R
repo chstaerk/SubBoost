@@ -1,29 +1,4 @@
-#' AdaSubBoost and RSubBoost
-#'
-#' This function implements the adaptive subspace boosting algorithm (AdaSubBoost) as well as random subspace boosting (RSubBoost).
-#' @param data should be a list with data$x as design matrix and data$y as response
-#' @param Iter iterations
-#' @param K parameter K - default is set to 100
-#' @param q parameter q - default is set to 10
-#' @param size.fixed default is set to NULL
-#' @param tau parameter tau - default is set to 0.01
-#' @param const parameter const - default is set to 0
-#' @param savings  default is set to 1
-#' @param const parameter const - default is set to 0
-#' @param U_C parameter is set to 25
-#' @param family default is set to "normal"
-#' @param conservative default is set to TRUE
-#' @param update default is set to "S"
-#' @param adaptive default is set to TRUE (AdaSubBoost), for RSubBoost specify as FALSE
-#' @param s_max default is set to 20
-#' @param update default is set to "S"
-#' @param nstop default is set to  Iter
-#' @param automatic.stopping default is set to TRUE
-#' @param marginal.screening default is set to FALSE
-#' @param plotting default is set to FALSE
-#' @keywords AdaSubBoost, RSubBoost
-#' @export
-#' @examples
+# AdaSubBoost and RSubBoost
 AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.01, const = 0, savings = 1, U_C = 25, family = "normal",
                         conservative = TRUE, update = "S", adaptive = TRUE, s_max = 20, nstop = Iter, automatic.stopping = TRUE,
                         marginal.screening = FALSE, plotting = FALSE) {

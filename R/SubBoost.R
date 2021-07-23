@@ -1,19 +1,4 @@
-#' SubBoost
-#'
-#' This function implements the subspace boosting algorithm (SubBoost).
-#' @param data should be a list with data$x as design matrix and data$y as response
-#' @param Iter iterations
-#' @param size.fixed default is set to NULL
-#' @param tau parameter tau - default is set to 0.01
-#' @param const parameter const - default is set to 0
-#' @param savings  default is set to 1
-#' @param family default is set to "normal"
-#' @param s_max default is set to 20
-#' @param automatic.stopping default is set to TRUE
-#' @param plotting default is set to FALSE
-#' @keywords SubBoost
-#' @export
-#' @examples
+# SubBoost
 SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
                       const = 0, savings = 1, family = "normal",
                       s_max = 20, automatic.stopping = TRUE,

@@ -1,13 +1,4 @@
-
-#' EBIC
-#'
-#' This function computes extended BIC (EBIC).
-#' @param data should be a list with data$x as design matrix and data$y as response
-#' @param indices indices of data$x dat are included in the model
-#' @param const parameter for the EBIC, for BIC specify const = 0, for AIC specify const = "AIC".
-#' @keywords EBIC
-#' @export
-#' @examples
+# EBIC
 EBIC <- function(data,indices,const) {
   n=nrow(data$x)
   p=ncol(data$x)
@@ -28,18 +19,7 @@ EBIC <- function(data,indices,const) {
   }
 }
 
-#' Simulate toeplitz correlated data
-#'
-#' This function simulates toeplitz correlated data.
-#' @param n number of observations
-#' @param p number of variables
-#' @param beta true coefficient vector (of size p)
-#' @param sigma.normal epsilon
-#' @param corr base correlation
-#'
-#' @keywords toeplitz
-#' @export
-#' @examples
+# Simulate toeplitz correlated data
 simdata.toeplitz.corr <- function (n, p, beta, sigma.normal, corr = 0) {
 
   mu=rep(0,p)
@@ -55,15 +35,7 @@ simdata.toeplitz.corr <- function (n, p, beta, sigma.normal, corr = 0) {
   return(list(x=x,y=y))
 }
 
-#' Extended BIC for given estimate beta
-#'
-#' This function computes extended BIC for given estimate beta of length p+1
-#' @param data should be a list with data$x as design matrix and data$y as response
-#' @param beta given estimate for coefficients of length p + 1
-#' @param const parameter for the EBIC, for BIC specify const = 0, for AIC specify const = "AIC".
-#' @keywords EBIC
-#' @export
-#' @examples
+# Extended BIC for given estimate beta
 EBIC_beta <- function(data, beta,const) {
   n=nrow(data$x)
   p=ncol(data$x)
@@ -84,14 +56,7 @@ EBIC_beta <- function(data, beta,const) {
   }
 }
 
-#' Fit ordinary least squares
-#'
-#' This function estimates the coefficient vector beta.
-#' @param data should be a list with data$x as design matrix and data$y as response
-#' @param indices indices of data$x dat are included in the model
-#' @keywords OLS
-#' @export
-#' @examples
+# Fit ordinary least squares
 beta.hat <- function(data, indices) {
   n=nrow(data$x)
   x.cur=data$x[,indices]
@@ -103,43 +68,17 @@ beta.hat <- function(data, indices) {
 }
 
 
-#' Get y hat values
-#'
-#' This function estimates the y given x and coefficient vector beta.
-#' @param data should be a list with data$x as design matrix
-#' @param beta.hat coefficient vector
-#' @keywords OLS
-#' @export
-#' @examples
+# Get y hat values
 y.hat <- function(data, beta.hat) {
   n = nrow(data$x)
   x.matrix = cbind(c(rep(1,n)),data$x)
   return (x.matrix %*% beta.hat)
 }
 
-#' Sum of squares
-#'
-#' This function returns the sum of squares of x.
-#' @param x input
-#' @keywords ssq
-#' @export
-#' @examples
+# Sum of squares
 sqnorm2 <- function(x) return(sum(x^2))
 
-#' Evaluate simulation results (internal)
-#'
-#' This helper function evaluates simulation results.
-#' @param model input
-#' @param beta1 input
-#' @param s0 input
-#' @param data.test input
-#' @param n_test input
-#' @param time input
-#' @param beta input
-#' @param data input
-#' @keywords simulations
-#' @export
-#' @examples
+# Evaluate simulation results (internal)
 method_res_scenario <- function (model, beta1, s0, data.test,
                                      n_test, time, beta=NULL, data){
   false_pos = sum(beta1[model]==0)
