@@ -7,7 +7,8 @@ export(method_res_scenario)
 export(simdata.toeplitz.corr)
 export(sqnorm2)
 export(y.hat)
+importFrom("leaps", "regsubsets")
 
-#importFrom("graphics", "par")
-#importFrom("stats", ".lm.fit", "cor", "rbinom", "rnorm", "toeplitz")
+importFrom("graphics", "par")
+importFrom("stats", ".lm.fit", "cor", "rbinom", "rnorm", "toeplitz")
 
