@@ -67,3 +67,55 @@ This function implements the adaptive subspace boosting algorithm (AdaSubBoost) 
 }
 \keyword{AdaSubBoost,}
 \keyword{RSubBoost}
+\examples{
+
+### high-dimensional example (AdaSubBoost and RSubBoost)
+# load "hdi" package for riboflavin data
+require(hdi)
+
+data(riboflavin)
+n <- length(riboflavin$y)
+p <- dim(riboflavin$x)[2]
+
+# input data format:
+# list with design matrix in data$x and response vector in data$y
+data <- list()
+data$x <- as.matrix(riboflavin$x)
+data$y <- as.vector(riboflavin$y)
+
+# constant (gamma) in EBIC
+const <- 1
+
+# expected search size
+q <- 20
+
+# adaptation parameter
+K <- p/q
+
+# maximum size for initial screening
+s_max <- 15
+
+# learning rate
+tau <- 0.01
+
+# (maximum) number of iterations
+Iter <- 1000
+
+# AdaSubBoost
+set.seed(123)
+output <- AdaSubBoost(data = data, Iter = Iter, const = const,
+                      K = K, q = q, tau = tau, s_max = s_max)
+output$selected # selected variables by AdaSubBoost
+output$coef[names(output$selected)] # estimated non-zero coefficients by AdaSubBoost
+
+
+# RSubBoost (no adaptation of sampling probabilites for base-learners)
+set.seed(123)
+outputRSub <- AdaSubBoost(data = data, Iter = Iter, const = const,
+                          K = K, q = q, tau = tau, s_max = s_max,
+                          adaptive = FALSE)
+outputRSub$selected  # selected variables by RSubBoost
+outputRSub$coef[names(outputRSub$selected)]
+
+
+}

@@ -42,3 +42,27 @@ SubBoost(
 This function implements the subspace boosting algorithm (SubBoost).
 }
 \keyword{SubBoost}
+\examples{
+require(TH.data)
+
+# input data format:
+# list with design matrix in data$x and response vector in data$y
+data <- list()
+data$x <- as.matrix(bodyfat[,-2])
+data$y <- as.vector(bodyfat$DEXfat)
+
+# constant (gamma) in EBIC
+const <- 0 # classical BIC
+
+# learning rate
+tau <- 0.01
+
+# (maximum) number of iterations
+Iter <- 1000
+
+# SubBoost (only applicable for low-dimensional settings, e.g. p<=20)
+outputSub <- SubBoost(data = data, Iter = Iter, const = const, tau = tau)
+outputSub$selected # selected variables by SubBoost
+outputSub$coef # estimated coefficient vector by SubBoost
+}
+

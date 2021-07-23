@@ -6,7 +6,7 @@ Maintainer: Christian Staerk <christian.staerk@imbie.uni-bonn.de>
 Description: Implements different subspace boosting algorithms (SubBoost, RSubBoost, AddaSubBoost) with multivariable base-learners for high-dimensional variable selection and prediction.
 Depends: R (>= 3.5.0)
 Imports: leaps, glmnet, mboost, stabs, bst, MASS, mvnfast
-Suggests: TH.data
+Suggests: TH.data, hdi
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
