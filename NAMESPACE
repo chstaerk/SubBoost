@@ -8,6 +8,8 @@ export(simdata.toeplitz.corr)
 export(sqnorm2)
 export(y.hat)
 importFrom("leaps", "regsubsets")
+importFrom("MASS", "mvrnorm")
+importFrom("mvnfast", "rmvn")
 
 importFrom("graphics", "par")
 importFrom("stats", ".lm.fit", "cor", "rbinom", "rnorm", "toeplitz")
