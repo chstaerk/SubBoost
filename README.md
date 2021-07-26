@@ -100,3 +100,4 @@ outputRSub <- AdaSubBoost(data = data, Iter = Iter, const = const,
 outputRSub$selected  # selected variables by RSubBoost
 outputRSub$coef[names(outputRSub$selected)] # estimated non-zero coefficients by RSubBoost
 ```
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mayrandy/subboost?branch=master&svg=true)](https://ci.appveyor.com/project/mayrandy/subboost)
