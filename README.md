@@ -1,5 +1,5 @@
 
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mayrandy/subboost?branch=master&svg=true)](https://ci.appveyor.com/project/mayrandy/subboost)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/605bq2g5klogwux3?svg=true)](https://ci.appveyor.com/project/mayrandy/subboost)
 
 # SubBoost 
 
