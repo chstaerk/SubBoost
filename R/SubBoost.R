@@ -24,7 +24,7 @@ SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
 
   # initialization of size (s) if not provided
   if (is.null(size.fixed)) {
-    regs=summary(regsubsets(as.matrix(data$x), data$y, intercept = TRUE, nvmax = min(c(p,n-3)), method = "exhaustive"))
+    regs=summary(leaps::regsubsets(as.matrix(data$x), data$y, intercept = TRUE, nvmax = min(c(p,n-3)), method = "exhaustive"))
     modelmatrix=as.matrix(regs$which[,-1,drop=F])
     vec=rep(0,nrow(modelmatrix)+1)
     vec[nrow(modelmatrix)+1] = EBIC(data,NULL,const)
@@ -49,14 +49,14 @@ SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
   for (t in 1:Iter) {
 
     ## selection of S (step a3)
-    regs=summary(regsubsets(as.matrix(data.cur$x), data.cur$y, intercept=TRUE, nvmax=min(c(p,n-3,size)), method = "exhaustive"))
+    regs=summary(leaps::regsubsets(as.matrix(data.cur$x), data.cur$y, intercept=TRUE, nvmax=min(c(p,n-3,size)), method = "exhaustive"))
     modelmatrix=as.matrix(regs$which[,-1,drop=F])
     S = which(modelmatrix[size,])
     S.list[[t]] = S
 
     ## selection of A (step a4)
     if (length(S)>1) {
-      regs=summary(regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method = "exhaustive"))
+      regs=summary(leaps::regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method = "exhaustive"))
       modelmatrix=as.matrix(regs$which[,-1,drop=F])
       vec=rep(0,nrow(modelmatrix)+1)
       vec[nrow(modelmatrix)+1] = EBIC(data,NULL,const)

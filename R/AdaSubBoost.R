@@ -37,15 +37,15 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
       for (j in 1:p) marg.corr[j] = abs(cor(data$x[,j],data$y))
       S = sort(order(marg.corr, decreasing=TRUE)[1:s_max])
     } else {
-      regs=summary(regsubsets(as.matrix(data$x),data$y,intercept=TRUE,nvmax=s_max,method="forward"))
+      regs=summary(leaps::regsubsets(as.matrix(data$x),data$y,intercept=TRUE,nvmax=s_max,method="forward"))
       modelmatrix=as.matrix(regs$which[,-1,drop=F])
       S = which(modelmatrix[s_max,])
     }
 
     if (length(S)>U_C) {
-      regs=summary(regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method="backward"))
+      regs=summary(leaps::regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method="backward"))
     } else {
-      regs=summary(regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method="exhaustive"))
+      regs=summary(leaps::regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method="exhaustive"))
     }
     modelmatrix=as.matrix(regs$which[,-1,drop=F])
     vec=rep(0,nrow(modelmatrix)+1)
@@ -63,7 +63,7 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
       size = 1
     } } else {
       size = size.fixed
-      regs=summary(regsubsets(as.matrix(data$x),data$y,intercept=TRUE,nvmax=size,method="forward"))
+      regs=summary(leaps::regsubsets(as.matrix(data$x),data$y,intercept=TRUE,nvmax=size,method="forward"))
       modelmatrix=as.matrix(regs$which[,-1,drop=F])
       S = which(modelmatrix[size,])
     }
@@ -92,9 +92,9 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
       S = V
     } else {
       if (length(V)>U_C) {
-        regs=summary(regsubsets(as.matrix(data.cur$x[,V,drop=F]),data.cur$y,intercept=TRUE,nvmax=min(c(length(V),n-3)),method="backward"))
+        regs=summary(leaps::regsubsets(as.matrix(data.cur$x[,V,drop=F]),data.cur$y,intercept=TRUE,nvmax=min(c(length(V),n-3)),method="backward"))
       } else {
-        regs=summary(regsubsets(as.matrix(data.cur$x[,V,drop=F]),data.cur$y,intercept=TRUE,nvmax=min(c(length(V),n-3)),method="exhaustive"))
+        regs=summary(leaps::regsubsets(as.matrix(data.cur$x[,V,drop=F]),data.cur$y,intercept=TRUE,nvmax=min(c(length(V),n-3)),method="exhaustive"))
       }
       modelmatrix=as.matrix(regs$which[,-1,drop=F])
       S = V[which(modelmatrix[min(size,length(V)),])]
@@ -103,7 +103,7 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
 
     ## selection of A (step a4)
     if (length(S)>1) {
-      regs=summary(regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method="exhaustive"))
+      regs=summary(leaps::regsubsets(as.matrix(data$x[,S,drop=F]),data$y,intercept=TRUE,nvmax=min(c(length(S),n-3)),method="exhaustive"))
       modelmatrix=as.matrix(regs$which[,-1,drop=F])
       vec=rep(0,nrow(modelmatrix)+1)
       vec[nrow(modelmatrix)+1] = EBIC(data,NULL,const)
