@@ -7,7 +7,7 @@ EBIC <- function(data,indices,const) {
 
   x.cur=data$x[,indices]
   x.cur=cbind(c(rep(1,n)),x.cur)
-  lm.out = .lm.fit(x.cur, data$y)
+  lm.out = stats::.lm.fit(x.cur, data$y)
   deviance = n*(1+log(2*pi)+ log(sum(lm.out$residuals^2) /n))
   if(const!="AIC") {
     EBIC = deviance + log(n)*(length(indices)+2) + 2*(length(indices)+2)*const*log(p)
@@ -23,14 +23,14 @@ EBIC <- function(data,indices,const) {
 simdata.toeplitz.corr <- function (n, p, beta, sigma.normal, corr = 0) {
 
   mu=rep(0,p)
-  help=numeric(p)
+  help = numeric(p)
   for (k in 1:p) help[k]=corr^(k-1)
 
-  Sigma=toeplitz(help)
-  if (p<=140) x = mvrnorm(n , mu, Sigma) else x = rmvn(n, mu, Sigma)
+  Sigma = stats::toeplitz(help)
+  if (p<=140) x = MASS::mvrnorm(n , mu, Sigma) else x = mvnfast::rmvn(n, mu, Sigma)
 
-  linpred=x%*%beta
-  y=rnorm(n, linpred, sigma.normal)
+  linpred = x%*%beta
+  y = stats::rnorm(n, linpred, sigma.normal)
 
   return(list(x=x,y=y))
 }

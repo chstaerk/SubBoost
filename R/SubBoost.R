@@ -92,7 +92,7 @@ SubBoost <- function (data, Iter, size.fixed = NULL, tau = 0.01,
 
     if (plotting) {
       if (t %% 1000 == 0) {
-        par(mfrow=c(1,1))
+        graphics::par(mfrow=c(1,1))
         plot(values,pch=20,main="",xlab="Iteration",ylab="Training loss")
       }
     }

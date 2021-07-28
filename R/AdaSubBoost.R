@@ -34,7 +34,7 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
 
     if (marginal.screening) {
       marg.corr = numeric(p)
-      for (j in 1:p) marg.corr[j] = abs(cor(data$x[,j],data$y))
+      for (j in 1:p) marg.corr[j] = abs(stats::cor(data$x[,j],data$y))
       S = sort(order(marg.corr, decreasing=TRUE)[1:s_max])
     } else {
       regs=summary(leaps::regsubsets(as.matrix(data$x),data$y,intercept=TRUE,nvmax=s_max,method="forward"))
@@ -75,7 +75,7 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
   for (t in 1:Iter) {
 
     # Independent Bernoulli draws (step a1)
-    b = rbinom(p,1,relfreq)
+    b = stats::rbinom(p,1,relfreq)
 
     # Definition of set V of considered base-learners (step a2)
     V = which(b==1)
@@ -159,7 +159,7 @@ AdaSubBoost <-function (data, Iter, K = 100, q = 10, size.fixed = NULL, tau = 0.
     # plotting of training loss during the algorithm (every 1000 iterations)
     if (plotting) {
       if (t %% 1000 == 0) {
-        par(mfrow=c(1,1))
+        graphics::par(mfrow=c(1,1))
         plot(values,pch=20,main="",xlab="Iteration",ylab="Training loss")
       }
     }
