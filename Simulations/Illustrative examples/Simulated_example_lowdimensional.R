@@ -2,6 +2,7 @@
 #install_github("chstaerk/SubBoost")
 
 library("SubBoost")
+library("mboost")
 
 
 RNGkind("L'Ecuyer-CMRG")
