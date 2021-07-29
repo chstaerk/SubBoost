@@ -53,7 +53,7 @@ par(mfrow=c(2,2))
 boxplot(take_element3(results,1,1,1,nSim), take_element3(results,2,1,1,nSim), 
         take_element3(results,1,2,1,nSim), take_element3(results,2,2,1,nSim),
         take_element3(results,1,3,1,nSim), take_element3(results,2,3,1,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (a)", 
+        xaxt="n", main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
@@ -63,7 +63,7 @@ text(1:length(method_names), par("usr")[3] - 12, labels = method_names, srt = an
 boxplot(take_element3(results,1,1,2,nSim), take_element3(results,2,1,2,nSim), 
         take_element3(results,1,2,2,nSim), take_element3(results,2,2,2,nSim),
         take_element3(results,1,3,2,nSim), take_element3(results,2,3,2,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (a)", 
+        xaxt="n", main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -73,7 +73,7 @@ text(1:length(method_names), par("usr")[3] - 0.7, labels = method_names, srt = a
 boxplot(take_element3(results,1,1,3,nSim), take_element3(results,2,1,3,nSim), 
         take_element3(results,1,2,3,nSim), take_element3(results,2,2,3,nSim),
         take_element3(results,1,3,3,nSim), take_element3(results,2,3,3,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (a)", 
+        xaxt="n", main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Estimation Error (MSE)",  line = 0.4, cex.main = 1.1)
@@ -83,7 +83,7 @@ text(1:length(method_names), par("usr")[3] - 1.3, labels = method_names, srt = a
 boxplot(take_element3(results,1,1,4,nSim), take_element3(results,2,1,4,nSim), 
         take_element3(results,1,2,4,nSim), take_element3(results,2,2,4,nSim),
         take_element3(results,1,3,4,nSim), take_element3(results,2,3,4,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (a)", 
+        xaxt="n", main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
@@ -99,7 +99,7 @@ par(mfrow=c(2,2))
 boxplot(take_element3(results,1,1,1,nSim), take_element3(results,2,1,1,nSim), 
         take_element3(results,1,2,1,nSim), take_element3(results,2,2,1,nSim),
         take_element3(results,1,3,1,nSim), take_element3(results,2,3,1,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (b)", 
+        xaxt="n", main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
@@ -109,7 +109,7 @@ text(1:length(method_names), par("usr")[3] - 12, labels = method_names, srt = an
 boxplot(take_element3(results,1,1,2,nSim), take_element3(results,2,1,2,nSim), 
         take_element3(results,1,2,2,nSim), take_element3(results,2,2,2,nSim),
         take_element3(results,1,3,2,nSim), take_element3(results,2,3,2,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (b)", 
+        xaxt="n", main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -119,7 +119,7 @@ text(1:length(method_names), par("usr")[3] - 0.6, labels = method_names, srt = a
 boxplot(take_element3(results,1,1,3,nSim), take_element3(results,2,1,3,nSim), 
         take_element3(results,1,2,3,nSim), take_element3(results,2,2,3,nSim),
         take_element3(results,1,3,3,nSim), take_element3(results,2,3,3,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (b)", 
+        xaxt="n", main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Estimation Error (MSE)",  line = 0.4, cex.main = 1.1)
@@ -129,7 +129,7 @@ text(1:length(method_names), par("usr")[3] - 1, labels = method_names, srt = ang
 boxplot(take_element3(results,1,1,4,nSim), take_element3(results,2,1,4,nSim), 
         take_element3(results,1,2,4,nSim), take_element3(results,2,2,4,nSim),
         take_element3(results,1,3,4,nSim), take_element3(results,2,3,4,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (b)", 
+        xaxt="n", main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
@@ -137,14 +137,14 @@ text(1:length(method_names), par("usr")[3] - 0.12, labels = method_names, srt = 
 
 
 # Load results for high-dimensional setting (c)
-load("Sim_Toeplitz08_p1000_n1000_nSim500_Iter5000_fixedS0_100_autostop_choice_of_criterion.RData")
+load("Sim_Toeplitz08_p1000_n1000_nSim500_Iter10000_fixedS0_100_autostop_choice_of_criterion_19_07.RData")
 
 
 par(mfrow=c(2,2))
 boxplot(take_element3(results,1,1,1,nSim), take_element3(results,2,1,1,nSim), 
         take_element3(results,1,2,1,nSim), take_element3(results,2,2,1,nSim),
         take_element3(results,1,3,1,nSim), take_element3(results,2,3,1,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (c)", 
+        xaxt="n", main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
@@ -154,7 +154,7 @@ text(1:length(method_names), par("usr")[3] - 5, labels = method_names, srt = ang
 boxplot(take_element3(results,1,1,2,nSim), take_element3(results,2,1,2,nSim), 
         take_element3(results,1,2,2,nSim), take_element3(results,2,2,2,nSim),
         take_element3(results,1,3,2,nSim), take_element3(results,2,3,2,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (c)", 
+        xaxt="n", main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -164,7 +164,7 @@ text(1:length(method_names), par("usr")[3] - 5, labels = method_names, srt = ang
 boxplot(take_element3(results,1,1,3,nSim), take_element3(results,2,1,3,nSim), 
         take_element3(results,1,2,3,nSim), take_element3(results,2,2,3,nSim),
         take_element3(results,1,3,3,nSim), take_element3(results,2,3,3,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (c)", 
+        xaxt="n", main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Estimation Error (MSE)",  line = 0.4, cex.main = 1.1)
@@ -174,7 +174,7 @@ text(1:length(method_names), par("usr")[3] - 8, labels = method_names, srt = ang
 boxplot(take_element3(results,1,1,4,nSim), take_element3(results,2,1,4,nSim), 
         take_element3(results,1,2,4,nSim), take_element3(results,2,2,4,nSim),
         take_element3(results,1,3,4,nSim), take_element3(results,2,3,4,nSim),
-        xaxt="n", main ="High-dimensional simulation setting (c)", 
+        xaxt="n", main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)

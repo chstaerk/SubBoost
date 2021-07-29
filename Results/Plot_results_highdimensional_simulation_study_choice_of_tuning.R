@@ -50,14 +50,14 @@ cex.names = 1
 par(mfrow=c(2,2))
 boxplot(take_element(results,1,1,nSim), 
         take_element3(results,2,1,1,nSim), take_element3(results,2,2,1,nSim), take_element3(results,2,3,1,nSim), take_element3(results,2,4,1,nSim), take_element3(results,2,5,1,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,2,nSim), 
         take_element3(results,2,1,2,nSim), take_element3(results,2,2,2,nSim), take_element3(results,2,3,2,nSim), take_element3(results,2,4,2,nSim), take_element3(results,2,5,2,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -70,7 +70,7 @@ title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,4,nSim), 
         take_element3(results,2,1,4,nSim), take_element3(results,2,2,4,nSim), take_element3(results,2,3,4,nSim), take_element3(results,2,4,4,nSim), take_element3(results,2,5,4,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
@@ -78,7 +78,7 @@ title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,5,nSim), 
         take_element3(results,2,1,5,nSim), take_element3(results,2,2,5,nSim), take_element3(results,2,3,5,nSim), take_element3(results,2,4,5,nSim), take_element3(results,2,5,5,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19, 
         ylim=c(0,max(take_element(results,1,5,nSim), 
@@ -100,14 +100,14 @@ color_boxes = rep(pal_col[3],5)
 par(mfrow=c(2,2))
 boxplot(#take_element(results,1,1,nSim), 
         take_element3(results,3,1,1,nSim), take_element3(results,3,2,1,nSim), take_element3(results,3,3,1,nSim), take_element3(results,3,4,1,nSim), take_element3(results,3,5,1,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
 
 boxplot(#take_element(results,1,2,nSim), 
         take_element3(results,3,1,2,nSim), take_element3(results,3,2,2,nSim), take_element3(results,3,3,2,nSim), take_element3(results,3,4,2,nSim), take_element3(results,3,5,2,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -119,14 +119,14 @@ title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
 #        outcol=color_boxes,outpch = 19)
 boxplot(#take_element(results,1,4,nSim), 
         take_element3(results,3,1,4,nSim), take_element3(results,3,2,4,nSim), take_element3(results,3,3,4,nSim), take_element3(results,3,4,4,nSim), take_element3(results,3,5,4,nSim),
-        names = method_names, main ="High-dimensional simulation setting (a)", 
+        names = method_names, main ="Sparse high-dimensional setting (a)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
 
 boxplot(#take_element(results,1,5,nSim), 
   take_element3(results,3,1,5,nSim), take_element3(results,3,2,5,nSim), take_element3(results,3,3,5,nSim), take_element3(results,3,4,5,nSim), take_element3(results,3,5,5,nSim),
-  names = method_names, main ="High-dimensional simulation setting (a)", 
+  names = method_names, main ="Sparse high-dimensional setting (a)", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19, 
   ylim=c(0,max(take_element3(results,3,1,5,nSim), 
@@ -150,14 +150,14 @@ method_names = paste("K = ",  c(0, results$K_values), sep="")
 par(mfrow=c(2,2))
 boxplot(take_element(results,1,1,nSim), 
         take_element3(results,2,1,1,nSim), take_element3(results,2,2,1,nSim), take_element3(results,2,3,1,nSim), take_element3(results,2,4,1,nSim), take_element3(results,2,5,1,nSim),
-        names = method_names, main ="High-dimensional simulation setting (b)", 
+        names = method_names, main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,2,nSim), 
         take_element3(results,2,1,2,nSim), take_element3(results,2,2,2,nSim), take_element3(results,2,3,2,nSim), take_element3(results,2,4,2,nSim), take_element3(results,2,5,2,nSim),
-        names = method_names, main ="High-dimensional simulation setting (b)", 
+        names = method_names, main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -170,7 +170,7 @@ title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,4,nSim), 
         take_element3(results,2,1,4,nSim), take_element3(results,2,2,4,nSim), take_element3(results,2,3,4,nSim), take_element3(results,2,4,4,nSim), take_element3(results,2,5,4,nSim),
-        names = method_names, main ="High-dimensional simulation setting (b)", 
+        names = method_names, main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
@@ -178,7 +178,7 @@ title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,5,nSim), 
         take_element3(results,2,1,5,nSim), take_element3(results,2,2,5,nSim), take_element3(results,2,3,5,nSim), take_element3(results,2,4,5,nSim), take_element3(results,2,5,5,nSim),
-        names = method_names, main ="High-dimensional simulation setting (b)", 
+        names = method_names, main ="Sparse high-dimensional setting (b)", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19, 
         ylim=c(0,max(take_element(results,1,5,nSim), 
@@ -200,14 +200,14 @@ color_boxes = rep(pal_col[3],5)
 par(mfrow=c(2,2))
 boxplot(#take_element(results,1,1,nSim), 
   take_element3(results,3,1,1,nSim), take_element3(results,3,2,1,nSim), take_element3(results,3,3,1,nSim), take_element3(results,3,4,1,nSim), take_element3(results,3,5,1,nSim),
-  names = method_names, main ="High-dimensional simulation setting (b)", 
+  names = method_names, main ="Sparse high-dimensional setting (b)", 
   col = color_boxes,
   outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
 
 boxplot(#take_element(results,1,2,nSim), 
   take_element3(results,3,1,2,nSim), take_element3(results,3,2,2,nSim), take_element3(results,3,3,2,nSim), take_element3(results,3,4,2,nSim), take_element3(results,3,5,2,nSim),
-  names = method_names, main ="High-dimensional simulation setting (b)", 
+  names = method_names, main ="Sparse high-dimensional setting (b)", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -219,14 +219,14 @@ title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
 #        outcol=color_boxes,outpch = 19)
 boxplot(#take_element(results,1,4,nSim), 
   take_element3(results,3,1,4,nSim), take_element3(results,3,2,4,nSim), take_element3(results,3,3,4,nSim), take_element3(results,3,4,4,nSim), take_element3(results,3,5,4,nSim),
-  names = method_names, main ="High-dimensional simulation setting (b)", 
+  names = method_names, main ="Sparse high-dimensional setting (b)", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
 
 boxplot(#take_element(results,1,5,nSim), 
   take_element3(results,3,1,5,nSim), take_element3(results,3,2,5,nSim), take_element3(results,3,3,5,nSim), take_element3(results,3,4,5,nSim), take_element3(results,3,5,5,nSim),
-  names = method_names, main ="High-dimensional simulation setting (b)", 
+  names = method_names, main ="Sparse high-dimensional setting (b)", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19, 
   ylim=c(0,max(take_element3(results,3,1,5,nSim), 
@@ -241,7 +241,7 @@ par(mgp=c(3,1,0))
 ###################################################################################
 
 # Load results for high-dimensional setting (c)
-load("Sim_Toeplitz08_p1000_n1000_nSim500_Iter5000_fixedS0_100_autostop_choice_of_tuning.RData")
+load("Sim_Toeplitz08_p1000_n1000_nSim500_Iter10000_fixedS0_100_autostop_choice_of_tuning_19_07.RData")
 
 color_boxes = c(pal_col[2], rep(pal_col[3],7))
 method_names = paste("K = ",  c(0, results$K_values), sep="")
@@ -249,14 +249,14 @@ method_names = paste("K = ",  c(0, results$K_values), sep="")
 par(mfrow=c(2,2))
 boxplot(take_element(results,1,1,nSim), 
         take_element3(results,2,1,1,nSim), take_element3(results,2,2,1,nSim), take_element3(results,2,3,1,nSim), take_element3(results,2,4,1,nSim), take_element3(results,2,5,1,nSim),
-        names = method_names, main ="High-dimensional simulation setting (c)", 
+        names = method_names, main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,2,nSim), 
         take_element3(results,2,1,2,nSim), take_element3(results,2,2,2,nSim), take_element3(results,2,3,2,nSim), take_element3(results,2,4,2,nSim), take_element3(results,2,5,2,nSim),
-        names = method_names, main ="High-dimensional simulation setting (c)", 
+        names = method_names, main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -269,7 +269,7 @@ title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,4,nSim), 
         take_element3(results,2,1,4,nSim), take_element3(results,2,2,4,nSim), take_element3(results,2,3,4,nSim), take_element3(results,2,4,4,nSim), take_element3(results,2,5,4,nSim),
-        names = method_names, main ="High-dimensional simulation setting (c)", 
+        names = method_names, main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
@@ -277,7 +277,7 @@ title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
 
 boxplot(take_element(results,1,5,nSim), 
         take_element3(results,2,1,5,nSim), take_element3(results,2,2,5,nSim), take_element3(results,2,3,5,nSim), take_element3(results,2,4,5,nSim), take_element3(results,2,5,5,nSim),
-        names = method_names, main ="High-dimensional simulation setting (c)", 
+        names = method_names, main ="Non-sparse high-dimensional setting", 
         col = color_boxes,
         outcol=color_boxes,outpch = 19, 
         ylim=c(0,max(take_element(results,1,5,nSim), 
@@ -299,14 +299,14 @@ color_boxes = rep(pal_col[3],5)
 par(mfrow=c(2,2))
 boxplot(#take_element(results,1,1,nSim), 
   take_element3(results,3,1,1,nSim), take_element3(results,3,2,1,nSim), take_element3(results,3,3,1,nSim), take_element3(results,3,4,1,nSim), take_element3(results,3,5,1,nSim),
-  names = method_names, main ="High-dimensional simulation setting (c)", 
+  names = method_names, main ="Non-sparse high-dimensional setting", 
   col = color_boxes,
   outcol= color_boxes,outpch = 19)
 title(main = "False Positives",  line = 0.4, cex.main = 1.1)
 
 boxplot(#take_element(results,1,2,nSim), 
   take_element3(results,3,1,2,nSim), take_element3(results,3,2,2,nSim), take_element3(results,3,3,2,nSim), take_element3(results,3,4,2,nSim), take_element3(results,3,5,2,nSim),
-  names = method_names, main ="High-dimensional simulation setting (c)", 
+  names = method_names, main ="Non-sparse high-dimensional setting", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19)
 title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
@@ -318,14 +318,14 @@ title(main = "False Negatives",  line = 0.4, cex.main = 1.1)
 #        outcol=color_boxes,outpch = 19)
 boxplot(#take_element(results,1,4,nSim), 
   take_element3(results,3,1,4,nSim), take_element3(results,3,2,4,nSim), take_element3(results,3,3,4,nSim), take_element3(results,3,4,4,nSim), take_element3(results,3,5,4,nSim),
-  names = method_names, main ="High-dimensional simulation setting (c)", 
+  names = method_names, main ="Non-sparse high-dimensional setting", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19)
 title(main = "Prediction Error (RMSE)",  line = 0.4, cex.main = 1.1)
 
 boxplot(#take_element(results,1,5,nSim), 
   take_element3(results,3,1,5,nSim), take_element3(results,3,2,5,nSim), take_element3(results,3,3,5,nSim), take_element3(results,3,4,5,nSim), take_element3(results,3,5,5,nSim),
-  names = method_names, main ="High-dimensional simulation setting (c)", 
+  names = method_names, main ="Non-sparse high-dimensional setting", 
   col = color_boxes,
   outcol=color_boxes,outpch = 19, 
   ylim=c(0,max(take_element3(results,3,1,5,nSim), 
