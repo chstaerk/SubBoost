@@ -3,12 +3,19 @@
 # JRSSB Datasets Vol. 77(5), Song and Liang (2015) 
 # Website: https://rss.onlinelibrary.wiley.com/hub/journal/14679868/series-b-datasets/pre_2016a
 
-#library("devtools")
-#install_github("chstaerk/SubBoost")
-#install.packages("glmnetUtils")
-
 library("SubBoost")
+
+library("leaps")
+library("glmnet")
+library("MASS")
+library("mvnfast")
+library("mboost")
+library("stabs")
+library("bst")
+library("parallel")
 library("glmnetUtils")
+library("xgboost")
+
 
 
 
@@ -19,8 +26,6 @@ External_LOOCV = function (i,data,...){
   p=ncol(data$x)
   data.cur = list()
   
-  #data.cur$x = unAsIs(data$x[-i,])
-  #data.cur$y = unAsIs(data$y[-i])
   data.cur$x = data$x[-i,]
   data.cur$y = data$y[-i]
   data.adjXi = c(1,data$x[i,])
@@ -80,7 +85,7 @@ External_LOOCV = function (i,data,...){
   # Stability Selection for Boosting 
   mod <- glmboost(y = data.cur$y, x = data.cur$x, control = boost_control(mstop = 1000)) 
   start.time <- Sys.time()
-  mod.stab = stabsel(mod, PFER = PFER, sampling.type = "SS", q = q_stabsel)
+  mod.stab = stabsel(mod, PFER = PFER, sampling.type = "SS", q = q_stabsel, papply=lapply)
   end.time <- Sys.time()
   timeStability = as.double(end.time-start.time, units = "secs")
   Stability_model = as.vector(mod.stab$selected)
@@ -94,7 +99,7 @@ External_LOOCV = function (i,data,...){
   mstop.max2 = 5000
   start.time <- Sys.time()
   cvm2 <- cv.bst(data.cur$x, data.cur$y, family="gaussian", ctrl = bst_control(twinboost = TRUE, twintype=1, coefir = Boost_beta ,
-                                                                               xselect.init = Boost_model, mstop = mstop.max2), learner="ls")
+                                                                               xselect.init = Boost_model, mstop = mstop.max2), learner="ls", n.cores=1)
   mstop.optimal = which.min(cvm2$cv.error)
   twinBoost = bst(data.cur$x, data.cur$y, family="gaussian", ctrl = bst_control(twinboost = TRUE, twintype=1, coefir = Boost_beta ,
                                                                                 xselect.init = Boost_model, mstop = mstop.optimal), learner="ls")
@@ -144,7 +149,8 @@ External_LOOCV = function (i,data,...){
     cv_errors_alpha[k] <- min(mod_cv$modlist[[k]]$cvm)
   }
   alpha_min <- mod_cv$alpha[which.min(cv_errors_alpha)]
-  ENet_beta = coef(mod_cv, alpha=alpha_min) 
+  lambda_min <- sapply(mod_cv$modlist, `[[`, "lambda.min")[which.min(cv_errors_alpha)]
+  ENet_beta = coef(mod_cv, alpha=alpha_min, s=lambda_min) #coef(mod_cv, alpha=alpha_min)
   ENet_model = which(ENet_beta[-1] !=0)
   end.time <- Sys.time()
   timeENet = as.double(end.time-start.time,units = "secs")
@@ -199,29 +205,53 @@ External_LOOCV = function (i,data,...){
   SqE_EBIC = as.numeric((linpred - data$y[i])^2)
   modelsizes_EBIC = length(EBIC_model)
   
+  #XGBoost with variable selection (component-wise boosting)
+  start.time <- Sys.time()
+  cv <- xgb.cv(data = data.cur$x , 
+               label = data.cur$y, 
+               eta = 0.1, 
+               nrounds = mstop.max,
+               nfold = 10, 
+               booster = "gblinear", 
+               objective = "reg:squarederror", 
+               updater = "coord_descent",
+               feature_selector = "greedy", 
+               base_score=0, 
+               top_k = 1,
+               verbose=FALSE,
+               nthread=1,
+               early_stopping_rounds = 10) 
+  iter.opt <- which.min(cv$evaluation_log$test_rmse_mean)
+  
+  bst <- xgboost(data = data.cur$x , label = data.cur$y, eta = 0.1, nrounds = iter.opt, nthread = 1,
+                 updater = 'coord_descent', feature_selector = 'greedy', top_k = 1, base_score=0, verbose=FALSE, 
+                 booster = "gblinear", objective = "reg:squarederror", callbacks = list(cb.gblinear.history()))
+  coef_path <- xgb.gblinear.history(bst)
+  XGBoostCD_beta <- coef_path[iter.opt,]
+  XGBoostCD_model <- which(coef_path[iter.opt,-1]!=0)
+  end.time <- Sys.time()
+  timeXGBoostCD = as.double(end.time-start.time,units = "secs")
+  linpred = data.adjXi %*% XGBoostCD_beta
+  SqE_XGBoostCD = as.numeric((linpred - data$y[i])^2)
+  modelsizes_XGBoostCD = length(XGBoostCD_model)
+  
   if (p<=20) {
     return(list(SqE_AdaSubBoost=SqE_AdaSubBoost, SqE_RSubBoost=SqE_RSubBoost, SqE_SubBoost=SqE_SubBoost, SqE_Boosting = SqE_Boosting, SqE_TwinBoost = SqE_TwinBoost, SqE_Lasso = SqE_Lasso, SqE_ENet = SqE_ENet, SqE_Stability = SqE_Stability ,  
-                SqE_ReLasso = SqE_ReLasso, SqE_EBIC = SqE_EBIC,  
+                SqE_ReLasso = SqE_ReLasso, SqE_EBIC = SqE_EBIC,  SqE_XGBoostCD = SqE_XGBoostCD,  
                 modelsizes_AdaSubBoost=modelsizes_AdaSubBoost, modelsizes_RSubBoost=modelsizes_RSubBoost, modelsizes_SubBoost=modelsizes_SubBoost, modelsizes_TwinBoost = modelsizes_TwinBoost, modelsizes_Boosting = modelsizes_Boosting, modelsizes_Lasso = modelsizes_Lasso, modelsizes_ENet = modelsizes_ENet, modelsizes_Stability = modelsizes_Stability,
-                modelsizes_ReLasso = modelsizes_ReLasso, modelsizes_EBIC = modelsizes_EBIC,  
+                modelsizes_ReLasso = modelsizes_ReLasso, modelsizes_EBIC = modelsizes_EBIC,  modelsizes_XGBoostCD = modelsizes_XGBoostCD,
                 timeAdaSubBoost=timeAdaSubBoost, timeRSubBoost=timeRSubBoost, timeSubBoost=timeSubBoost, timeSubBoost=timeSubBoost, timeTwinBoost = timeTwinBoost, timeBoosting = timeBoosting, timeLasso = timeLasso, timeENet = timeENet, timeStability = timeStability,
-                timeReLasso = timeReLasso, timeEBIC = timeEBIC))
+                timeReLasso = timeReLasso, timeEBIC = timeEBIC, timeXGBoostCD = timeXGBoostCD))
   } else {
     return(list(SqE_AdaSubBoost=SqE_AdaSubBoost, SqE_RSubBoost=SqE_RSubBoost, SqE_Boosting = SqE_Boosting, SqE_TwinBoost = SqE_TwinBoost, SqE_Lasso = SqE_Lasso, SqE_ENet = SqE_ENet, SqE_Stability = SqE_Stability ,  
-                SqE_ReLasso = SqE_ReLasso, SqE_EBIC = SqE_EBIC, 
+                SqE_ReLasso = SqE_ReLasso, SqE_EBIC = SqE_EBIC, SqE_XGBoostCD = SqE_XGBoostCD,  
                 modelsizes_AdaSubBoost=modelsizes_AdaSubBoost, modelsizes_RSubBoost=modelsizes_RSubBoost, modelsizes_TwinBoost = modelsizes_TwinBoost, modelsizes_Boosting = modelsizes_Boosting, modelsizes_Lasso = modelsizes_Lasso, modelsizes_ENet = modelsizes_ENet, modelsizes_Stability = modelsizes_Stability,
-                modelsizes_ReLasso = modelsizes_ReLasso, modelsizes_EBIC = modelsizes_EBIC,  
+                modelsizes_ReLasso = modelsizes_ReLasso, modelsizes_EBIC = modelsizes_EBIC,  modelsizes_XGBoostCD = modelsizes_XGBoostCD, 
                 timeAdaSubBoost=timeAdaSubBoost, timeRSubBoost=timeRSubBoost, timeTwinBoost = timeTwinBoost, timeBoosting = timeBoosting, timeLasso = timeLasso, timeENet = timeENet, timeStability = timeStability,
-                timeReLasso = timeReLasso, timeEBIC = timeEBIC))
+                timeReLasso = timeReLasso, timeEBIC = timeEBIC, timeXGBoostCD = timeXGBoostCD))
   }
 }
 
-unAsIs <- function(X) {
-  if("AsIs" %in% class(X)) {
-    class(X) <- class(X)[-match("AsIs", class(X))]
-  }
-  X
-}
 
 ##################################################
 # Please download PCR data from JRSSB 
@@ -267,4 +297,4 @@ RNGkind("L'Ecuyer-CMRG")
 set.seed(1)
 LOOCV_results = mclapply(1:n, External_LOOCV, mc.cores = numCores, data=data, mstop.max = mstop.max,Iter=Iter,K=K,q=q, tau = tau, const=const, U_C=20, savings=1, mc.set.seed = TRUE,  mc.preschedule = FALSE, size.fixed=size.fixed, q_stabsel=q_stabsel, PFER=PFER, nstop=nstop, marginal.screening=marginal.screening, plotting=plotting, savings=savings, s_max = s_max)
 
-save(LOOCV_results, file="LOOCV_PCR_CV_24_05.RData")
+save(LOOCV_results, file="LOOCV_PCR_CV.RData")
