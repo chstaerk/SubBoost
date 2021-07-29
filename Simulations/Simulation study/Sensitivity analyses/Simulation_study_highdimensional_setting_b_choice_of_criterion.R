@@ -61,8 +61,8 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
   RSubBoost_results_const = list()
   ##########
   for (i in 1:length(const_values)) {
-    AdaSubBoost_results_const[[i]] = method_results_scenario(model=AdaSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_const[[i]],beta=AdaSubBoost_betas_const[[i]],data=data)
-    RSubBoost_results_const[[i]] = method_results_scenario(model=RSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost_const[[i]],beta=RSubBoost_betas_const[[i]],data=data)
+    AdaSubBoost_results_const[[i]] = method_res_scenario(model=AdaSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_const[[i]],beta=AdaSubBoost_betas_const[[i]],data=data)
+    RSubBoost_results_const[[i]] = method_res_scenario(model=RSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost_const[[i]],beta=RSubBoost_betas_const[[i]],data=data)
   }
   
   results = list(RSubBoost_results_const = RSubBoost_results_const,
