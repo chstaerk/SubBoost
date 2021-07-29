@@ -1,7 +1,11 @@
-#library("devtools")
-#install_github("chstaerk/SubBoost")
-
 library("SubBoost")
+
+library("leaps")
+library("MASS")
+library("mvnfast")
+
+library("parallel")
+
 
 fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
                  s0, n, p, n_test, sigma.normal, corr, nstop, randomS0, s_max,
@@ -12,11 +16,8 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
   } else {
   S0 = 1:s0
   }
-  #S0 = seq(1, p, by = p/s0)
-  #S0 = c(1:4, 101:104, 201:204, 301:304)
   beta = numeric(p)
   beta[S0] = runif(s0,-2,2)
-  #beta[S0] = rep(c(-2,-1,1,2),4)
   
   if (p>2000) {
   data = simdata.toeplitz.corr.multiple(n =n ,q = p/10 , qrep=10, beta =beta ,sigma.normal = sigma.normal,corr=corr) 
@@ -60,8 +61,8 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
   RSubBoost_results_const = list()
   ##########
   for (i in 1:length(const_values)) {
-    AdaSubBoost_results_const[[i]] = method_results_scenario(model=AdaSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_const[[i]],beta=AdaSubBoost_betas_const[[i]],data=data)
-    RSubBoost_results_const[[i]] = method_results_scenario(model=RSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost_const[[i]],beta=RSubBoost_betas_const[[i]],data=data)
+    AdaSubBoost_results_const[[i]] = method_res_scenario(model=AdaSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_const[[i]],beta=AdaSubBoost_betas_const[[i]],data=data)
+    RSubBoost_results_const[[i]] = method_res_scenario(model=RSubBoost_models_const[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost_const[[i]],beta=RSubBoost_betas_const[[i]],data=data)
   }
   
   results = list(RSubBoost_results_const = RSubBoost_results_const,
@@ -84,7 +85,7 @@ U_C = 25
 
 size.fixed = NULL
 tau = 0.01 
-Iter = 5000 # 5000
+Iter = 10000 # 5000
 nstop = p / 2
 const = 1 # const = 1 # gamma (Penalty for shrinkage in EBIC)
 
@@ -127,5 +128,5 @@ results$s_max = s_max
 results$const_values = const_values
 
 
-save(results, file="Sim_Toeplitz08_p1000_n1000_nSim500_Iter5000_fixedS0_100_autostop_choice_of_criterion.RData")
+save(results, file="Sim_Toeplitz08_p1000_n1000_nSim500_Iter10000_fixedS0_100_autostop_choice_of_criterion.RData")
 

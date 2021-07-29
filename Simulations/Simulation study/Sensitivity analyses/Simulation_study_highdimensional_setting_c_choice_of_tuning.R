@@ -1,7 +1,10 @@
-#library("devtools")
-#install_github("chstaerk/SubBoost")
-
 library("SubBoost")
+
+library("leaps")
+library("MASS")
+library("mvnfast")
+
+library("parallel")
 
 fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
                  s0, n, p, n_test, sigma.normal, corr, nstop, randomS0, s_max,
@@ -12,12 +15,9 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
   } else {
   S0 = 1:s0
   }
-  #S0 = seq(1, p, by = p/s0)
-  #S0 = c(1:4, 101:104, 201:204, 301:304)
   beta = numeric(p)
   beta[S0] = runif(s0,-2,2)
-  #beta[S0] = rep(c(-2,-1,1,2),4)
-  
+
   if (p>2000) {
   data = simdata.toeplitz.corr.multiple(n =n ,q = p/10 , qrep=10, beta =beta ,sigma.normal = sigma.normal,corr=corr) 
   data.test = simdata.toeplitz.corr.multiple(n_test,q = p/10,qrep=10, beta=beta,sigma.normal= sigma.normal,corr= corr)
@@ -96,16 +96,16 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=30, savings=1,
   AdaSubBoost_results_q = list()
   ##########
   for (i in 1:length(K_values)) {
-    AdaSubBoost_results_K[[i]] = method_results_scenario(model=AdaSubBoost_models_K[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_K[[i]],beta=AdaSubBoost_betas_K[[i]],data=data)
+    AdaSubBoost_results_K[[i]] = method_res_scenario(model=AdaSubBoost_models_K[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_K[[i]],beta=AdaSubBoost_betas_K[[i]],data=data)
   }
   
   for (i in 1:length(q_values)) {
-    AdaSubBoost_results_q[[i]] = method_results_scenario(model=AdaSubBoost_models_q[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_q[[i]],beta=AdaSubBoost_betas_q[[i]],data=data)
+    AdaSubBoost_results_q[[i]] = method_res_scenario(model=AdaSubBoost_models_q[[i]],beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost_q[[i]],beta=AdaSubBoost_betas_q[[i]],data=data)
   }
   
-  RSubBoost_results = method_results_scenario(model=RSubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost,beta=RSubBoost_beta,data=data)
+  RSubBoost_results = method_res_scenario(model=RSubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost,beta=RSubBoost_beta,data=data)
  
-  EBIC_results =  method_results_scenario(model=EBIC_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeEBIC,beta=EBIC_beta,data=data)
+  EBIC_results =  method_res_scenario(model=EBIC_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeEBIC,beta=EBIC_beta,data=data)
   
   
   results = list(RSubBoost_results = RSubBoost_results,
@@ -181,5 +181,5 @@ results$U_C_values = U_C_values
 
 
 
-save(results, file="Sim_Toeplitz08_p1000_n1000_nSim500_Iter5000_fixedS0_100_autostop_choice_of_tuning.RData")
+save(results, file="Sim_Toeplitz08_p1000_n1000_nSim500_Iter10000_fixedS0_100_autostop_choice_of_tuning.RData")
 
