@@ -1,10 +1,17 @@
 #library("devtools")
 #install_github("chstaerk/SubBoost")
-#install.packages("glmnetUtils")
-
-
 library("SubBoost")
+
+library("leaps")
+library("MASS")
+library("mvnfast")
+library("glmnet")
+library("mboost")
+library("stabs")
+library("bst")
+library("parallel")
 library("glmnetUtils")
+library("xgboost")
 
 
 fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER, q_stabsel,
@@ -35,7 +42,6 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER,
   timeAdaSubBoost = as.double(end.time-start.time,units = "secs")
   AdaSubBoost_beta = output$beta.cur
   AdaSubBoost_model = which(AdaSubBoost_beta[-1]!=0)
-  output$mstop
 
   # RSubBoost (without adapting probabilities, adaptive=FALSE)
   start.time <- Sys.time()
@@ -74,7 +80,7 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER,
   mstop.max2 = 1000
   start.time <- Sys.time()
   cvm2 <- cv.bst(data$x, data$y, family="gaussian", ctrl = bst_control(twinboost = TRUE, twintype=1, coefir = Boost_beta[-1] ,
-                                                                       xselect.init = Boost_model, mstop = mstop.max2), learner="ls")
+                                                                       xselect.init = Boost_model, mstop = mstop.max2), learner="ls", n.cores=1)
   mstop.optimal = which.min(cvm2$cv.error)
   twinBoost = bst(data$x, data$y, family="gaussian", ctrl = bst_control(twinboost = TRUE, twintype=1, coefir = Boost_beta[-1] ,
                                                                         xselect.init = Boost_model, mstop = mstop.optimal), learner="ls")
@@ -90,40 +96,18 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER,
   start.time <- Sys.time()
   mstop.max = 1000
   mod <- glmboost(y = data$y, x = data$x, control = boost_control(mstop = mstop.max)) 
-  mod.stab = stabsel(mod, PFER = PFER, sampling.type = "SS", q = q_stabsel) #cutoff = 0.6)
+  mod.stab = stabsel(mod, PFER = PFER, sampling.type = "SS", q = q_stabsel, papply=lapply) #cutoff = 0.6)
   end.time <- Sys.time()
   timeStability = as.double(end.time-start.time, units = "secs")
   Stability_model = as.vector(mod.stab$selected)
   Stability_beta = beta.hat(data,Stability_model)
   }
   
-  ## Adaptive Lasso with Cross-Validation in first step and EBIC in second step
-  #start.time <- Sys.time()
-  #cv.fit1=cv.glmnet(data$x,data$y,intercept=TRUE,family="gaussian",standardize=FALSE,alpha=1)
-  #betas.cv.fit1=as.vector(predict(cv.fit1,type="coefficients",s="lambda.1se"))[-1]
-  #new_penalty=rep(0,p)
-  #new_penalty=1/pmax(abs(betas.cv.fit1),.Machine$double.eps)
-  #AdaLasso.fit2= glmnet(data$x,data$y,penalty.factor=new_penalty,family="gaussian",intercept=TRUE,standardize=FALSE,alpha=1,dfmax=n-3)
-  #AdaLasso.path <- predict(AdaLasso.fit2,type="coefficients")
-  #nonzeros.AdaLasso.path = predict(AdaLasso.fit2,type="nonzero")
-  #length.path = dim(AdaLasso.path)[2]
-  #vec = numeric(length.path)
-  #for (j in 1:length.path){
-  #  vec[j] = EBIC_beta(data,AdaLasso.path[,j],const) 
-  #}
-  #mini = which.min(vec)
-  #AdaLasso_model = nonzeros.AdaLasso.path[[mini]]
-  #if (is.null(AdaLasso_model)) AdaLasso_model = integer(0)
-  #AdaLasso_beta = AdaLasso.path[,mini]
-  #end.time <- Sys.time()
-  #timeAdaLasso = as.double(end.time-start.time,units = "secs")
-  
   ## Lasso with cross-validation
   # Run cross-validation
   start.time <- Sys.time()
   mod_cv <- cv.glmnet(x=data$x, y=data$y, family="gaussian")
   Lasso_beta = coef(mod_cv, s=mod_cv$lambda.min) #lambda.min
-  #Lasso_beta = coef(mod_cv,s= mod_cv$lambda.1se)  
   Lasso_model = which(Lasso_beta[-1] !=0)
   end.time <- Sys.time()
   timeLasso = as.double(end.time-start.time,units = "secs")
@@ -136,20 +120,11 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER,
     cv_errors_alpha[k] <- min(mod_cv$modlist[[k]]$cvm)
   }
   alpha_min <- mod_cv$alpha[which.min(cv_errors_alpha)]
-  ENet_beta = coef(mod_cv, alpha=alpha_min) 
+  lambda_min <- sapply(mod_cv$modlist, `[[`, "lambda.min")[which.min(cv_errors_alpha)]
+  ENet_beta = coef(mod_cv, alpha=alpha_min, s=lambda_min) #coef(mod_cv, alpha=alpha_min) 
   ENet_model = which(ENet_beta[-1] !=0)
   end.time <- Sys.time()
   timeENet = as.double(end.time-start.time,units = "secs")
-  
-  ## Elastic net with fixed alpha=0.5 and cross-validation for lambda only
-  # Run cross-validation
-  #start.time <- Sys.time()
-  #mod_cv <- cv.glmnet(x=data$x, y=data$y, family="gaussian", alpha=0.5)
-  #ENet_beta2 = coef(mod_cv, mod_cv$lambda.min) #lambda.min
-  #Lasso_beta = coef(mod_cv, mod_cv$lambda.1se)  
-  #ENet_model2 = which(ENet_beta2[-1] !=0)
-  #end.time <- Sys.time()
-  #timeENet2 = as.double(end.time-start.time,units = "secs")
   
   ## Relaxed Lasso with cross-validation
   start.time <- Sys.time()
@@ -180,19 +155,46 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER,
   end.time <- Sys.time()
   timeEBIC = as.double(end.time-start.time,units = "secs")
   
+  #XGBoost with variable selection (component-wise boosting)
+  start.time <- Sys.time()
+  cv <- xgb.cv(data = data$x , 
+               label = data$y, 
+               eta = tau_L2Boost, 
+               nrounds = mstop.max,
+               nfold = 10, 
+               booster = "gblinear", 
+               objective = "reg:squarederror", 
+               updater = "coord_descent",
+               feature_selector = "greedy", 
+               base_score=0, 
+               top_k = 1,
+               verbose=FALSE,
+               nthread=1,
+               early_stopping_rounds = 10) 
+  iter.opt <- which.min(cv$evaluation_log$test_rmse_mean)
+  
+  bst <- xgboost(data = data$x , label = data$y, eta = 0.1, nrounds = iter.opt, nthread = 1,
+                 updater = 'coord_descent', feature_selector = 'greedy', top_k = 1, base_score=0, verbose=FALSE, 
+                 booster = "gblinear", objective = "reg:squarederror", callbacks = list(cb.gblinear.history()))
+  coef_path <- xgb.gblinear.history(bst)
+  XGBoostCD_beta <- coef_path[iter.opt,]
+  XGBoostCD_model <- which(coef_path[iter.opt,-1]!=0)
+  end.time <- Sys.time()
+  timeXGBoostCD = as.double(end.time-start.time,units = "secs")
+  
   
   ##########
-  AdaSubBoost_results = method_results_scenario(model=AdaSubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost,beta=AdaSubBoost_beta,data=data)
-  RSubBoost_results = method_results_scenario(model=RSubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost,beta=RSubBoost_beta,data=data)
-  SubBoost_results = method_results_scenario(model=SubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeSubBoost,beta=SubBoost_beta,data=data)
-  Boost_results = method_results_scenario(model=Boost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeBoost,beta=Boost_beta,data=data)
-  TwinBoost_results = method_results_scenario(model=TwinBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeTwinBoost,beta=TwinBoost_beta,data=data)
-  if (s0<=10) Stability_results = method_results_scenario(model=Stability_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeStability,beta=Stability_beta,data=data)
-  #AdaLasso_results = method_results_scenario(model=AdaLasso_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaLasso,beta=AdaLasso_beta,data=data)
-  Lasso_results = method_results_scenario(model=Lasso_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeLasso,beta=Lasso_beta,data=data)
-  ENet_results = method_results_scenario(model=ENet_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeENet,beta=ENet_beta,data=data)
-  ReLasso_results = method_results_scenario(model=ReLasso_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeReLasso,beta=ReLasso_beta,data=data)
-  EBIC_results =  method_results_scenario(model=EBIC_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeEBIC,beta=EBIC_beta,data=data)
+  AdaSubBoost_results = method_res_scenario(model=AdaSubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeAdaSubBoost,beta=AdaSubBoost_beta,data=data)
+  RSubBoost_results = method_res_scenario(model=RSubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeRSubBoost,beta=RSubBoost_beta,data=data)
+  SubBoost_results = method_res_scenario(model=SubBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeSubBoost,beta=SubBoost_beta,data=data)
+  Boost_results = method_res_scenario(model=Boost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeBoost,beta=Boost_beta,data=data)
+  TwinBoost_results = method_res_scenario(model=TwinBoost_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeTwinBoost,beta=TwinBoost_beta,data=data)
+  if (s0<=10) Stability_results = method_res_scenario(model=Stability_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeStability,beta=Stability_beta,data=data)
+  Lasso_results = method_res_scenario(model=Lasso_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeLasso,beta=Lasso_beta,data=data)
+  ENet_results = method_res_scenario(model=ENet_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeENet,beta=ENet_beta,data=data)
+  ReLasso_results = method_res_scenario(model=ReLasso_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeReLasso,beta=ReLasso_beta,data=data)
+  EBIC_results =  method_res_scenario(model=EBIC_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeEBIC,beta=EBIC_beta,data=data)
+  XGBoostCD_results = method_res_scenario(model=XGBoostCD_model,beta1=beta,s0=s0,data.test=data.test,n_test=n_test,time=timeXGBoostCD,beta=XGBoostCD_beta,data=data)
   
   results = list(SubBoost_results = SubBoost_results,
                  RSubBoost_results = RSubBoost_results,
@@ -201,10 +203,10 @@ fsim <- function(i, Iter, K, q, size.fixed, tau, const, U_C=25, savings=1, PFER,
                  TwinBoost_results = TwinBoost_results,
                  Stability_results = Stability_results,
                  Lasso_results = Lasso_results, 
-                 #AdaLasso_results = AdaLasso_results, 
                  ENet_results = ENet_results,
                  ReLasso_results = ReLasso_results,
-                 EBIC_results = EBIC_results)
+                 EBIC_results = EBIC_results,
+                 XGBoostCD_results = XGBoostCD_results)
   print(paste("Simulated dataset ", i))
   print(results)
   return(results)
@@ -264,4 +266,4 @@ results$q_stabsel = q_stabsel
 results$nSim = nSim
 
 # Save the results 
-save(results, file="Sim_Toeplitz08_p20_n100_nSim500_Iter1000_fixedS0_4_autostop_24_05.RData")
+save(results, file="Sim_Toeplitz08_p20_n100_nSim500_Iter1000_fixedS0_4_autostop.RData")
